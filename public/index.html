@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Terminal Emulator</title>
+    <link rel="stylesheet" href="/xterm/css/xterm.css" />
+    <style>
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: black;
+      }
+      #terminal {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="terminal"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/xterm/lib/xterm.js"></script>
+    <script>
+      const socket = io();
+      const term = new Terminal();
+      term.open(document.getElementById('terminal'));
+      term.write("Hello to Node REPL, type enter to start!");
+      term.onData(data => {
+        socket.emit('data', data)
+      });
+      
+      socket.on('data', data => { 
+        term.write(data)
+      });
+    </script>
+  </body>
+</html>
