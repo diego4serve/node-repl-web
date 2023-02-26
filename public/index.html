@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Terminal Emulator</title>
+    <title>Node REPL</title>
     <link rel="stylesheet" href="/xterm/css/xterm.css" />
     <style>
       html, body {
@@ -13,20 +13,35 @@
         background-color: black;
       }
       #terminal {
-        height: 100%;
+        height: 50%;
         width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      
+      #welcome-title {
+        color:white;
+        padding:  10px;
+      }
+
+      #credits,#credits a {
+        color: white;
+        margin: 0 auto;
+        text-align: center;
       }
     </style>
   </head>
   <body>
+    <h1 id="welcome-title">Play and experiment with Node REPL</h1>
     <div id="terminal"></div>
+    <h4 id="credits">A toy project from <a href="https://github.com/diego4serve">Diego Fernando Dominguez</a></h4>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/xterm/lib/xterm.js"></script>
     <script>
       const socket = io();
       const term = new Terminal();
       term.open(document.getElementById('terminal'));
-      term.write("Hello to Node REPL, type enter to start!");
+      // term.write("Hello to Node REPL, play and experiment with Javascript!");
       term.onData(data => {
         socket.emit('data', data)
       });

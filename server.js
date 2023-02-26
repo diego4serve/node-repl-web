@@ -4,16 +4,16 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const pty = require('node-pty');
 
-const terminal = pty.spawn('node', [], {
-  name: 'xterm-color',
-  cols: 80,
-  rows: 80,
-  cwd: process.env.HOME,
-  env: process.env
-});
-
 io.on('connection', (socket) => {
   console.log('a user connected');
+
+  const terminal = pty.spawn('node', [], {
+    name: 'xterm-color',
+    cols: 80,
+    rows: 80,
+    cwd: process.env.HOME,
+    env: process.env
+  });
 
   socket.on('data', (data) => {
     terminal.write(data);
@@ -25,6 +25,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
+    terminal.kill();
   });
 });
 
